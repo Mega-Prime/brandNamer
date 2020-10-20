@@ -5,20 +5,20 @@ import (
 	"time"
 )
 
-const charset = "abcdefghijklmnopqrstuvwxyz" +
-	"ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
+const (
+	consonants = "bcdfghjklmnpqrstvwxyz"
+	vowels     = "aeiou"
+)
 
 var seededRand *rand.Rand = rand.New(
 	rand.NewSource(time.Now().UnixNano()))
 
-func StringWithCharset(length int, charset string) string {
-	b := make([]byte, length)
-	for i := range b {
-		b[i] = charset[seededRand.Intn(len(charset))]
-	}
-	return string(b)
-}
+func Name(length int) string {
+	var res string
 
-func StringDefault(length int) string {
-	return StringWithCharset(length, charset)
+	for i := 0; i < length; i++ {
+		res += string(consonants[seededRand.Intn(len(consonants))])
+		res += string(vowels[seededRand.Intn(len(vowels))])
+	}
+	return res
 }
