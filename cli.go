@@ -2,37 +2,49 @@ package brandNamer
 
 import (
 	"fmt"
+	"log"
+	"os"
+
 	"github.com/urfave/cli"
 )
 
-app := &cli.App{
-	Name: "Brand Namer",
-	Usage: "Create a random Brand Name",
-	
+func StartCLI() {
 
-	//Will use the same flags for all commands
-	// so define it here
+	app := cli.NewApp()
+	app.Name = "Random Brand Namer"
+	app.Usage = "Create random brand names"
+
+	// Using the same flag for all commands
 	myFlags := []cli.Flag{
 		cli.StringFlag{
-			Name: "Brand Namer",
-			Value: "Create Random Brand name"
+			Name:  "namer",
+			Value: "BrandNamer",
 		},
-
 	}
 
-	// create commands
-	app.commands = []cli.Command{
+	// Create commands
+	app.Commands = []cli.Command{
 		{
-			Name: "bn",
-			Usage: "Create random name w given # of letters",
+			Name:  "bn",
+			Usage: "Create random brandName",
 			Flags: myFlags,
-			// Action is code executed when we call "bn"
+
+			// Code that will execute when bn command is executed
 			Action: func(c *cli.Context) error {
-				fmt.Println("Enter Number of letters")
+				fmt.Println("Enter number of letters")
 
 				var num int
 				fmt.Scanln(&num)
-			}
-		}
+				fmt.Println("Your new brand name is: ", StringDefault(num))
+				return nil
+			},
+		},
 	}
+
+	// start app
+	err := app.Run(os.Args)
+	if err != nil {
+		log.Fatal(err)
+	}
+
 }
